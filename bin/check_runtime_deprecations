@@ -4,8 +4,7 @@ require_relative '../environment'
 
 module Garrison
   module Checks
-    @options[:something] = ENV['SOMETHING_SPECIFIC']
-    check = CheckSomething.new(@options)
+    check = CheckRuntimeDeprecations.new(@options)
     check.run
   end
 end

@@ -1,20 +1,22 @@
-Garrison Agent - Template
+Garrison Agent - AWS Lambda
 --
 
-This is a part of the [Garrison](https://github.com/forward3d/garrison) security project. This agent provides various TEMPLATE compliance checks.
+This is a part of the [Garrison](https://github.com/forward3d/garrison) security project. This agent provides various AWS Lambda compliance checks.
 
 ### Checks Provided
 
 | Function Name | Description  |
 | ------------- | ------------- |
-| `check_something` | Alerts if something happens. |
+| `check_dead_letter` | Alerts if a Lambda function has no dead letter config. |
+| `check_encryption_at_rest` | Alerts if a Lambda function is not using a customer master key (AWS KMS CMK) for encryption at rest. |
+| `check_runtime_deprecations` | Alerts if a Lambda function is using a deprecated runtime. |
 
 ### Installation & Example
 
-Docker Hub - https://hub.docker.com/r/forward3d/garrison-agent-TEMPLATE/
+Docker Hub - https://hub.docker.com/r/forward3d/garrison-agent-aws-lambda/
 
-    docker pull forward3d/garrison-agent-TEMPLATE
-    docker run --rm -e "GARRISON_URL=https://garrison.internal.acme.com" forward3d/garrison-agent-TEMPLATE check_something
+    docker pull forward3d/garrison-agent-aws-lambda
+    docker run --rm -e "GARRISON_URL=https://garrison.internal.acme.com" forward3d/garrison-agent-aws-lambda check_runtime_deprecations
 
 ### Agent Specific Configuration
 
@@ -22,16 +24,34 @@ These are additional specific configuration options for this agent. [Global agen
 
 | Environmental Variable  | Default | Expects |
 | ------------- | ------------- | ------------- |
-| `SOMETHING_SPECIFIC` | `all` [[1]](#f1) | Comma Separated Strings eg. `something,somethingelse` |
+| `GARRISON_AWS_REGIONS` | `all` [[1]](#f1) | Comma Separated Strings eg. `eu-west-1,us-west-2` |
 
-1. <span id="f1"></span> Something returned by the SDK at runtime for something.
+1. <span id="f1"></span> AWS Regions as returned by the AWS SDK at runtime for Lambda.
 
-### Check Specific Configuration
+#### AWS Authentication
 
-Some checks provided by this agent have extra configuration options.
+As this requires access to the AWS API you will need this IAM policy as a minimum for it to operate correctly.
 
-#### `check_something`
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                  "lambda:ListFunctions"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+            }
+        ]
+    }
 
-| Environmental Variable | Default |
+We recommend using EC2/ECS Task roles so that you don't need to send credentials into the container, however if you can't use those or want to send in specific Access Keys and Secret keys, please see the [AWS Documentation](https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/setup-config.html#aws-ruby-sdk-credentials-environment) as to how you do that.
+
+##### Cross-Account Authentication (`STS AssumeRole`)
+
+If you run Garrison agents in one account, and want to reach into other AWS accounts you need to send in extra environmental variables to support that.
+
+| Environmental Variable | Value |
 | ------------- | ------------- |
-| `SOMETHING_ELSE` | `7` |
+| `AWS_ACCOUNT_ID` | Not used as part of authentication, but to override the tag set on any alerts |
+| `AWS_ASSUME_ROLE_CREDENTIALS_ARN` | Arn of the role (in the other account) you wish to assume |

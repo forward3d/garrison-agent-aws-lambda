@@ -21,6 +21,6 @@ Garrison::Logging.info('Garrison Agent - TEMPLATE')
 module Garrison
   module Checks
     @options = {}
-    @options[:something] = ENV['SOMETHING_SPECIFIC'] ? ENV['SOMETHING_SPECIFIC'].split(',') : nil
+    @options[:regions] = ENV['GARRISON_AWS_REGIONS'] ? ENV['GARRISON_AWS_REGIONS'].split(',') : nil
   end
 end
