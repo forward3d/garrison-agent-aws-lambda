@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2019-10-21
+### Changed
+- Fixed date for nodejs8.10 no update deprecation
+
 ## [1.0.0] - 2019-10-21
 ### Created
 - Initial Version

@@ -145,7 +145,7 @@ module Garrison
             dates: {
               end_of_life: Date.new(2019, 12, 31),
               no_create: Date.new(2020, 1, 6),
-              no_update: Date.new(2019, 1, 20)
+              no_update: Date.new(2020, 1, 20)
             }
           },
           {
