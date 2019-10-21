@@ -1,0 +1,37 @@
+Garrison Agent - Template
+--
+
+This is a part of the [Garrison](https://github.com/forward3d/garrison) security project. This agent provides various TEMPLATE compliance checks.
+
+### Checks Provided
+
+| Function Name | Description  |
+| ------------- | ------------- |
+| `check_something` | Alerts if something happens. |
+
+### Installation & Example
+
+Docker Hub - https://hub.docker.com/r/forward3d/garrison-agent-TEMPLATE/
+
+    docker pull forward3d/garrison-agent-TEMPLATE
+    docker run --rm -e "GARRISON_URL=https://garrison.internal.acme.com" forward3d/garrison-agent-TEMPLATE check_something
+
+### Agent Specific Configuration
+
+These are additional specific configuration options for this agent. [Global agent configurations](https://github.com/forward3d/garrison#global-configuration-options) still apply.
+
+| Environmental Variable  | Default | Expects |
+| ------------- | ------------- | ------------- |
+| `SOMETHING_SPECIFIC` | `all` [[1]](#f1) | Comma Separated Strings eg. `something,somethingelse` |
+
+1. <span id="f1"></span> Something returned by the SDK at runtime for something.
+
+### Check Specific Configuration
+
+Some checks provided by this agent have extra configuration options.
+
+#### `check_something`
+
+| Environmental Variable | Default |
+| ------------- | ------------- |
+| `SOMETHING_ELSE` | `7` |
